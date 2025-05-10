@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// CYBER DETECTIVE ‑ BEGINNER EDITION  =========================================
-// A five‑part escape‑room for students who just learned JavaScript fundamentals
+// CYBER DETECTIVE - BEGINNER EDITION  =========================================
+// A five-part escape-room for students who just learned JavaScript fundamentals
 // Concepts covered (in increasing difficulty):
 //  1. Variables & data types
 //  2. Conditional logic
@@ -9,39 +9,36 @@
 //  5. Arrays & basic collection tricks
 // -----------------------------------------------------------------------------
 // HOW THE GAME WORKS
-//   ‑ Each “environment” prints an ALERT block + instructions.
-//   ‑ Inside the code you’ll see    // === TODO: …
+//   - Each “environment” prints an ALERT block + instructions.
+//   - Inside the code you’ll see    // === TODO: …
 //     Those lines are *wrong* on purpose. Students must edit them,
 //     run the file again (`node cyberEscape.js`), and pass the verification.
-//   ‑ Passing all tasks in an environment shows an ACCESS CODE needed
+//   - Passing all tasks in an environment shows an ACCESS CODE needed
 //     for the next one (stored in variable `accessCodeFromPrev`).
-//   ‑ If any task fails, they’ll see which part is invalid.
+//   - If any task fails, they’ll see which part is invalid.
 // -----------------------------------------------------------------------------
 // TEACHER TIP
 //   If you want separate files, just cut along the big ASCII banners.
-//   Otherwise a single file keeps line‑numbers easy to reference in class.
+//   Otherwise a single file keeps line-numbers easy to reference in class.
 // ============================================================================
 
 // *** 0.  Framework & helpers *************************************************
-const readline = require("readline");
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-const ask = (q) => new Promise((res) => rl.question(q, (a) => res(a.trim())));
+const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const ask = q => new Promise(res => rl.question(q, a => res(a.trim())));
 
 // Quick color helpers (works on most terminals)
-const green = (s) => `\x1b[32m${s}\x1b[0m`;
-const red = (s) => `\x1b[31m${s}\x1b[0m`;
+const green = s => `\x1b[32m${s}\x1b[0m`;
+const red   = s => `\x1b[31m${s}\x1b[0m`;
 
 // Simple sleep for dramatic effect
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // Store access code between environments
 let accessCodeFromPrev = "";
 
 // ============================================================================
-//  ENVIRONMENT 1 ‑‑ COMPROMISED NETWORK  (Variables & Data Types)
+//  ENVIRONMENT 1 -- COMPROMISED NETWORK  (Variables & Data Types)
 // ============================================================================
 async function environment1() {
   console.clear();
@@ -50,49 +47,41 @@ async function environment1() {
 ║      CYBER DETECTIVE – COMPROMISED NETWORK (Stage 1/5)       ║
 ╚══════════════════════════════════════════════════════════════╝\n`);
   console.log(
-    `SYSTEM ALERT: Core infrastructure variables corrupted!
-MISSION: Fix five variable declarations to stabilise the city network.\n`
-  );
+`SYSTEM ALERT: Core infrastructure variables corrupted!
+MISSION: Fix five variable declarations to stabilise the city network.\n`);
 
-  // ===== TASK 1: Security key (10‑char string) ============================
-  // === TODO: Replace null with a 10‑character alphanumeric string =========
-  let securityKey = "12345abcde";
+  // ===== TASK 1: Security key (10-char string) ============================
+  // === TODO: Replace null with a 10-character alphanumeric string =========
+  let securityKey = null;
 
-  // ===== TASK 2: Access level (integer 1‑5) ===============================
+  // ===== TASK 2: Access level (integer 1-5) ===============================
   // === TODO: Replace 0 with a valid integer between 1 and 5 ===============
-  let accessLevel = 4;
+  let accessLevel = 0;
 
   // ===== TASK 3: Activate security protocol (boolean) =====================
   // === TODO: Set to true ===================================================
-  let securityProtocolActive = true;
+  let securityProtocolActive = false;
 
   // ===== TASK 4: System status (decimal 0 – 1) ============================
   // === TODO: Give a value such as 0.75 ====================================
-  let systemStatus = 0.78;
+  let systemStatus = -1;
 
   // ===== TASK 5: Convert emergency code "911" to number ===================
   const emergencyCode = "911";
   // === TODO: Convert using Number() or parseInt() =========================
-  let emergencyCodeNumber = Number(emergencyCode);
+  let emergencyCodeNumber = "not-a-number";
 
   // ---------- verification (no edits needed) ------------------------------
   const ok = verifyNetwork(
-    securityKey,
-    accessLevel,
-    securityProtocolActive,
-    systemStatus,
-    emergencyCodeNumber
+    securityKey, accessLevel, securityProtocolActive,
+    systemStatus, emergencyCodeNumber
   );
 
   if (ok) {
     accessCodeFromPrev = "LOGIC-1001";
-    console.log(
-      green("\n✓ NETWORK STABLE ‑ Access code unlocked → " + accessCodeFromPrev)
-    );
+    console.log(green("\n✓ NETWORK STABLE - Access code unlocked → " + accessCodeFromPrev));
   } else {
-    console.log(
-      red("\n✗ NETWORK UNSTABLE – Fix the variables above and re‑run.")
-    );
+    console.log(red("\n✗ NETWORK UNSTABLE – Fix the variables above and re-run."));
     process.exit(0);
   }
   await pauseForNext();
@@ -115,7 +104,7 @@ function verifyNetwork(key, lvl, on, status, codeNum) {
 }
 
 // ============================================================================
-//  ENVIRONMENT 2 ‑‑ LOGIC GATEWAY  (Conditionals)
+//  ENVIRONMENT 2 -- LOGIC GATEWAY  (Conditionals)
 // ============================================================================
 async function environment2() {
   console.clear();
@@ -143,7 +132,7 @@ async function environment2() {
   allGood &= fixEmergencyDispatch();
 
   if (allGood) {
-    accessCodeFromPrev = "DEFENSE‑2024";
+    accessCodeFromPrev = "DEFENSE-2024";
     console.log(green("\n✓ LOGIC RESTORED – New code: " + accessCodeFromPrev));
   } else {
     console.log(red("\n✗ LOGIC STILL BROKEN – Review errors and retry."));
@@ -155,8 +144,7 @@ async function environment2() {
 // ---------- TASK 1 helper --------------------------------------------------
 function fixTrafficLogic() {
   const time24h = 14; // 2 PM
-  const isRushHour =
-    (time24h >= 7 && time24h <= 9) || (time24h >= 16 && time24h <= 18);
+  const isRushHour = (time24h >= 7 && time24h <= 9) || (time24h >= 16 && time24h <= 18);
   const isEmergencyVehicle = false;
   const isPedWaiting = true;
   let status = "";
@@ -164,22 +152,19 @@ function fixTrafficLogic() {
   // === TODO: Write correct if/else chain below ============================
   // Remember priority:
   //  1. Emergency vehicles
-  //  2. Rush‑hour main road
+  //  2. Rush-hour main road
   //  3. Pedestrians (if waiting)
-  //  4. Night flashing (22‑6)
+  //  4. Night flashing (22-6)
   //  5. Otherwise normal
-  status = "TODO‑FILL‑ME";
+  status = "TODO-FILL-ME";
 
   // ---------- check -------------------------------------------------------
   const ok =
     (isEmergencyVehicle && status === "EMERGENCY") ||
     (!isEmergencyVehicle && isRushHour && status === "MAIN ROAD") ||
-    (!isEmergencyVehicle &&
-      !isRushHour &&
-      isPedWaiting &&
-      status === "PEDESTRIAN") ||
+    (!isEmergencyVehicle && !isRushHour && isPedWaiting && status === "PEDESTRIAN") ||
     ((time24h > 22 || time24h < 6) && status === "FLASHING") ||
-    status === "NORMAL";
+    (status === "NORMAL");
 
   console.log(`Traffic signal status: ${status}  → ${ok ? "OK" : "BAD"}`);
   return ok;
@@ -197,26 +182,22 @@ function fixUtilityRouting() {
   route = "UNKNOWN";
 
   const ok =
-    (district === "Downtown" && load > 80 && route === "AUX") ||
-    (district === "Residential" && route === "CONTINUE") ||
-    (district === "Industrial" && load > 60 && route === "BALANCE") ||
-    (district === "Hospital" && route === "BACKUP") ||
-    (["Downtown", "Residential", "Industrial", "Hospital"].indexOf(district) <
-      0 &&
-      route === "STANDARD");
+    (district === "Downtown"   && load > 80 && route === "AUX")       ||
+    (district === "Residential"                 && route === "CONTINUE") ||
+    (district === "Industrial" && load > 60 && route === "BALANCE")  ||
+    (district === "Hospital"                    && route === "BACKUP")   ||
+    (["Downtown","Residential","Industrial","Hospital"].indexOf(district) < 0 && route === "STANDARD");
 
-  console.log(
-    `Utility routing for ${district}: ${route}  → ${ok ? "OK" : "BAD"}`
-  );
+  console.log(`Utility routing for ${district}: ${route}  → ${ok ? "OK" : "BAD"}`);
   return ok;
 }
 
 // ---------- TASK 3 helper --------------------------------------------------
 function fixEmergencyDispatch() {
   const medical = true;
-  const fire = false;
-  const police = false;
-  const disaster = false;
+  const fire    = false;
+  const police  = false;
+  const disaster= false;
   let dispatch = "";
 
   // === TODO: Build correct decision string ===============================
@@ -224,18 +205,18 @@ function fixEmergencyDispatch() {
   dispatch = "???";
 
   const ok =
-    (disaster && dispatch === "ALL") ||
-    (medical && fire && dispatch === "ALL") ||
-    (medical && !fire && !disaster && dispatch === "AMBULANCE") ||
-    (fire && !medical && !disaster && dispatch === "FIRE") ||
-    (police && !disaster && !medical && !fire && dispatch === "POLICE") ||
+    (disaster                          && dispatch === "ALL")       ||
+    (medical && fire                   && dispatch === "ALL")       ||
+    (medical && !fire && !disaster     && dispatch === "AMBULANCE") ||
+    (fire && !medical && !disaster     && dispatch === "FIRE")      ||
+    ((police && !disaster && !medical && !fire) && dispatch === "POLICE") ||
     (!medical && !fire && !police && !disaster && dispatch === "NONE");
   console.log(`Emergency dispatch: ${dispatch}  → ${ok ? "OK" : "BAD"}`);
   return ok;
 }
 
 // ============================================================================
-//  ENVIRONMENT 3 ‑‑ AUTOMATED DEFENSE  (Loops & Iterations)
+//  ENVIRONMENT 3 -- AUTOMATED DEFENSE  (Loops & Iterations)
 // ============================================================================
 async function environment3() {
   console.clear();
@@ -257,7 +238,7 @@ async function environment3() {
   ok &= fixAlertGenerator();
 
   if (ok) {
-    accessCodeFromPrev = "CRYPTO‑4040";
+    accessCodeFromPrev = "CRYPTO-4040";
     console.log(green("\n✓ DEFENSE ONLINE – New code: " + accessCodeFromPrev));
   } else {
     console.log(red("\n✗ DEFENSE OFFLINE – Repair loops and retry."));
@@ -268,10 +249,10 @@ async function environment3() {
 
 // ---------- TASK 1 camera loop --------------------------------------------
 function fixCameraLoop() {
-  const sectors = ["N", "E", "S", "W", "C"];
+  const sectors = ["N","E","S","W","C"];
   const scanned = [];
 
-  // === TODO: Write a for‑loop (or while) that pushes each sector once =====
+  // === TODO: Write a for-loop (or while) that pushes each sector once =====
   // Remove the wrong loop below
   /*
   for (let i = sectors.length; i >= 0; i--) {
@@ -283,22 +264,20 @@ function fixCameraLoop() {
   // << YOUR LOOP END   >>
 
   const ok = arraysEqual(sectors, scanned);
-  console.log(
-    `Camera scan pattern: ${scanned.join("")}  → ${ok ? "OK" : "BAD"}`
-  );
+  console.log(`Camera scan pattern: ${scanned.join("")}  → ${ok ? "OK" : "BAD"}`);
   return ok;
 }
 
 // ---------- TASK 2 nested loops -------------------------------------------
 function fixZoneSweeper() {
   const zones = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
   ];
   const checked = [];
 
-  // === TODO: Proper nested loop to push 1‑9 in order ======================
+  // === TODO: Proper nested loop to push 1-9 in order ======================
   // Delete the broken logic below
   /*
   let r = 0;
@@ -321,8 +300,8 @@ function fixZoneSweeper() {
 
 // ---------- TASK 3 alert generator ----------------------------------------
 function fixAlertGenerator() {
-  const types = ["Motion", "Perimeter", "Fire", "Cyber"];
-  const counts = [2, 0, 1, 3];
+  const types  = ["Motion","Perimeter","Fire","Cyber"];
+  const counts = [2,0,1,3];
   const generated = [];
 
   // === TODO: Generate correct number of alerts ============================
@@ -336,22 +315,19 @@ function fixAlertGenerator() {
 
   // << YOUR CODE >>
 
-  const expected = counts.reduce((a, b) => a + b, 0);
-  const ok =
-    generated.length === expected &&
-    generated.filter((a) => a.includes("Motion")).length === counts[0] &&
-    generated.filter((a) => a.includes("Perimeter")).length === counts[1] &&
-    generated.filter((a) => a.includes("Fire")).length === counts[2] &&
-    generated.filter((a) => a.includes("Cyber")).length === counts[3];
+  const expected = counts.reduce((a,b)=>a+b,0);
+  const ok = generated.length === expected &&
+             generated.filter(a=>a.includes("Motion")).length === counts[0] &&
+             generated.filter(a=>a.includes("Perimeter")).length === counts[1] &&
+             generated.filter(a=>a.includes("Fire")).length === counts[2] &&
+             generated.filter(a=>a.includes("Cyber")).length === counts[3];
 
-  console.log(
-    `Alerts generated: ${generated.length}/${expected}  → ${ok ? "OK" : "BAD"}`
-  );
+  console.log(`Alerts generated: ${generated.length}/${expected}  → ${ok ? "OK" : "BAD"}`);
   return ok;
 }
 
 // ============================================================================
-//  ENVIRONMENT 4 ‑‑ ENCRYPTION VAULT  (Functions)
+//  ENVIRONMENT 4 -- ENCRYPTION VAULT  (Functions)
 // ============================================================================
 async function environment4() {
   console.clear();
@@ -373,7 +349,7 @@ async function environment4() {
   all &= testMAC();
 
   if (all) {
-    accessCodeFromPrev = "CORE‑3141";
+    accessCodeFromPrev = "CORE-3141";
     console.log(green("\n✓ VAULT SECURE – New code: " + accessCodeFromPrev));
   } else {
     console.log(red("\n✗ VAULT COMPROMISED – Fix the functions and rerun."));
@@ -404,33 +380,33 @@ function makeAuth(msg, secret) {
 // ---------- tests ----------------------------------------------------------
 function testCaesar() {
   const ok =
-    caesarEncrypt("ABC", 3) === "DEF" &&
-    caesarEncrypt("HELLO", 13) === "URYYB" &&
-    caesarEncrypt("Attack At 1!", 1) === "Buubdl Bu 1!";
+    caesarEncrypt("ABC",3)          === "DEF" &&
+    caesarEncrypt("HELLO",13)       === "URYYB" &&
+    caesarEncrypt("Attack At 1!",1) === "Buubdl Bu 1!";
 
   console.log(`Caesar cipher tests → ${ok ? green("PASS") : red("FAIL")}`);
   return ok;
 }
 function testVigenere() {
   const ok =
-    vigenereEncrypt("ATTACKATDAWN", "LEMON") === "LXFOPVEFRNHR" &&
-    vigenereEncrypt("HELLO", "KEY") === "RIJVS";
+    vigenereEncrypt("ATTACKATDAWN","LEMON") === "LXFOPVEFRNHR" &&
+    vigenereEncrypt("HELLO","KEY")          === "RIJVS";
 
   console.log(`Vigenère cipher tests → ${ok ? green("PASS") : red("FAIL")}`);
   return ok;
 }
 function testMAC() {
-  const a = makeAuth("MSG", "KEY");
-  const b = makeAuth("MSG", "KEY");
-  const c = makeAuth("MSG.", "KEY");
+  const a = makeAuth("MSG","KEY");
+  const b = makeAuth("MSG","KEY");
+  const c = makeAuth("MSG.","KEY");
   const ok = a === b && a !== c && a !== "BAD" && a.length >= 4;
 
-  console.log(`Auth‑code tests → ${ok ? green("PASS") : red("FAIL")}`);
+  console.log(`Auth-code tests → ${ok ? green("PASS") : red("FAIL")}`);
   return ok;
 }
 
 // ============================================================================
-//  ENVIRONMENT 5 ‑‑ CORE SYSTEM  (Arrays & Objects)
+//  ENVIRONMENT 5 -- CORE SYSTEM  (Arrays & Objects)
 // ============================================================================
 async function environment5() {
   console.clear();
@@ -452,9 +428,7 @@ async function environment5() {
   ok &= taskCommandDict();
 
   if (ok) {
-    console.log(
-      green("\n✓ CORE RESTORED – City saved, Phantom identified. 🎉")
-    );
+    console.log(green("\n✓ CORE RESTORED – City saved, Phantom identified. 🎉"));
   } else {
     console.log(red("\n✗ CORE CORRUPTED – Correct remaining errors."));
   }
@@ -463,7 +437,7 @@ async function environment5() {
 
 // ---------- TASK 1: access levels array -----------------------------------
 function taskAccessArray() {
-  let accessLevels = [3, 7, 1, 5, 9, 2, 8, 4, 6];
+  let accessLevels = [3,7,1,5,9,2,8,4,6];
 
   // === TODO STEP 1: sort ascending ========================================
   // accessLevels = [...]
@@ -472,16 +446,16 @@ function taskAccessArray() {
   let median = -1; // TODO
 
   // STEP 3: sum
-  let sum = 0; // TODO
+  let sum = 0;     // TODO
 
   // STEP 4: highLevels >=5
   let highLevels = []; // TODO
 
   const good =
-    arraysEqual(accessLevels, [1, 2, 3, 4, 5, 6, 7, 8, 9]) &&
+    arraysEqual(accessLevels,[1,2,3,4,5,6,7,8,9]) &&
     median === 5 &&
     sum === 45 &&
-    arraysEqual(highLevels, [5, 6, 7, 8, 9]);
+    arraysEqual(highLevels,[5,6,7,8,9]);
 
   console.log(`Access array check → ${good ? "OK" : "BAD"}`);
   return good;
@@ -489,9 +463,9 @@ function taskAccessArray() {
 
 // ---------- TASK 2: user permissions --------------------------------------
 function taskUserPermissions() {
-  const admins = ["sysadmin", "netadmin", "secadmin"];
-  let powerUsers = ["op1", "op2", "dev1", "analyst"];
-  let regulars = ["user1", "user2", "user3", "user4", "user5"];
+  const admins   = ["sysadmin","netadmin","secadmin"];
+  let powerUsers = ["op1","op2","dev1","analyst"];
+  let regulars   = ["user1","user2","user3","user4","user5"];
 
   // STEP 1: allUsers
   let allUsers = []; // TODO
@@ -505,11 +479,11 @@ function taskUserPermissions() {
   // STEP 4: specialUsers = names containing '1' from admins + power
   let specialUsers = []; // TODO
 
-  const expectedAll = [...admins, ...powerUsers, ...regulars];
+  const expectedAll = [...admins,...powerUsers,...regulars];
   const good =
     arraysEqual(allUsers, expectedAll) &&
     regulars.includes("emergencyUser") &&
-    powerUsers.every((u) => !u.includes("admin")) &&
+    powerUsers.every(u=>!u.includes("admin")) &&
     arraysEqual(specialUsers, ["dev1"]);
 
   console.log(`User permission check → ${good ? "OK" : "BAD"}`);
@@ -518,7 +492,7 @@ function taskUserPermissions() {
 
 // ---------- TASK 3: command dictionary ------------------------------------
 function taskCommandDict() {
-  let cmd = { REBOOT: 5, SCAN: 2, BACKUP: 3, RESTORE: 6, SHUTDOWN: 1 };
+  let cmd = { REBOOT:5, SCAN:2, BACKUP:3, RESTORE:6, SHUTDOWN:1 };
 
   // 1. add LOCKDOWN:4
   // TODO
@@ -533,7 +507,7 @@ function taskCommandDict() {
     "LOCKDOWN" in cmd &&
     !("SHUTDOWN" in cmd) &&
     cmd.RESTORE === 7 &&
-    Object.values(high).every((v) => v >= 5) &&
+    Object.values(high).every(v=>v>=5) &&
     Object.keys(high).length === 3; // REBOOT, RESTORE, LOCKDOWN
 
   console.log(`Command dict check → ${good ? "OK" : "BAD"}`);
@@ -542,17 +516,17 @@ function taskCommandDict() {
 
 // ============================================================================
 //  Utility helpers (don’t change) ===========================================
-function arraysEqual(a, b) {
-  return a.length === b.length && a.every((v, i) => v === b[i]);
+function arraysEqual(a,b){
+  return a.length===b.length && a.every((v,i)=>v===b[i]);
 }
-async function pauseForNext() {
+async function pauseForNext(){
   console.log("\nPress ENTER to continue…");
   await ask("");
 }
 
 // ============================================================================
 //  GAME FLOW (sequential) ====================================================
-(async () => {
+(async ()=>{
   await environment1();
   await environment2();
   await environment3();
